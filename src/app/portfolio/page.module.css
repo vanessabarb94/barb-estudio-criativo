@@ -1,0 +1,57 @@
+.section {
+  padding-block: var(--space-10);
+}
+
+.header {
+  margin-bottom: var(--space-8);
+  max-width: 60ch;
+}
+
+.title {
+  font-size: clamp(32px, 6vw, 72px);
+  font-weight: 800;
+  margin-bottom: var(--space-3);
+}
+
+.subtitle {
+  opacity: 0.85;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+}
+
+.filterLabel {
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  width: 100%;
+  margin-bottom: var(--space-1);
+}
+
+.filterLink {
+  border: 1px solid var(--color-graphite);
+  border-radius: 999px;
+  padding: var(--space-1) var(--space-3);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-menu);
+}
+
+.filterLink[aria-current="true"] {
+  background: var(--color-graphite);
+  color: var(--color-offwhite);
+}
+
+/* Revision 5: a grade de cards por categoria (antes aqui, uma única
+   grade plana) virou `CategoryBlock.module.css` — a listagem agora
+   agrupa por bloco de categoria (Marcas/Social Media/Apresentações),
+   cada um com seu próprio CTA de contato (ver /portfolio/page.tsx). */
+.emptyState {
+  padding-block: var(--space-8);
+  opacity: 0.8;
+}

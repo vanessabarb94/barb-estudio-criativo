@@ -1,0 +1,120 @@
+.section {
+  padding-block: var(--space-10);
+}
+
+/* Revision 11: "Voltar" sobe pro topo da página (visível assim que
+   abre, sem precisar rolar até o rodapé) — pílula com borda, mesmo
+   padrão visual do CTA, pra ficar bem perceptível. */
+.backLinkTop {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--color-graphite);
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--text-menu);
+}
+
+.backLinkTop:hover {
+  background: var(--color-graphite);
+  color: var(--color-offwhite);
+}
+
+.header {
+  margin-bottom: var(--space-8);
+  max-width: 70ch;
+}
+
+.title {
+  font-size: clamp(32px, 6vw, 72px);
+  font-weight: 800;
+  margin-bottom: var(--space-3);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.category {
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.summary {
+  opacity: 0.85;
+}
+
+.participation {
+  margin-block: var(--space-6);
+  font-size: clamp(18px, 2vw, 22px);
+}
+
+.participationLabel {
+  font-weight: 700;
+}
+
+.galleryHeading {
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-3);
+  display: block;
+}
+
+.footer {
+  margin-top: var(--space-10);
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(25, 25, 26, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Revision 10: "Voltar" + "Próximo projeto" agrupados à esquerda
+   (navegação), CTA isolado à direita (conversão) — pedido explícito da
+   cliente para facilitar a navegação entre os projetos. */
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.nextLink {
+  font-size: var(--text-menu);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: underline;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.finalCta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-graphite);
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--text-menu);
+}
+
+.finalCta:hover {
+  background: var(--color-graphite);
+  color: var(--color-offwhite);
+}

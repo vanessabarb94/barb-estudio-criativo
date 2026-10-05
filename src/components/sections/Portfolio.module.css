@@ -1,0 +1,41 @@
+.section {
+  padding-block: var(--space-10);
+  background: var(--color-offwhite);
+  color: var(--color-graphite);
+}
+
+.title {
+  font-size: clamp(28px, 4.5vw, 48px);
+  font-weight: 800;
+  margin-bottom: var(--space-8);
+  text-align: center;
+}
+
+/* Revision 9: cards/grid de cada bloco passaram a vir de
+   CategoryBlock.module.css (componente reaproveitado de /portfolio) —
+   ver Portfolio.tsx. */
+
+/* Revision 11: 1 único CTA centralizado ao final da seção (substitui os
+   3 CTAs por bloco, escondidos aqui via `hideCta`). */
+.sectionCta {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-9);
+}
+
+.contactCta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-5);
+  border: 1px solid var(--color-graphite);
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--text-menu);
+}
+
+.contactCta:hover {
+  background: var(--color-graphite);
+  color: var(--color-offwhite);
+}

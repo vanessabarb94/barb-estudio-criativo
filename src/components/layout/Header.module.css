@@ -1,0 +1,78 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--color-offwhite);
+  border-bottom: 1px solid rgba(25, 25, 26, 0.08);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  min-height: 72px;
+}
+
+/*
+ * Revision 3: a margem lateral do header precisa ser menor que o
+ * --margin-inline geral do site (usado pelo resto das seções via
+ * .container) — a redução da revision 2 não foi suficiente. Seletor
+ * `.header .bar` tem especificidade maior que `.container` isolado,
+ * então sobrescreve o padding-inline herdado independentemente da
+ * ordem de carregamento dos módulos CSS.
+ */
+.header .bar {
+  padding-inline: clamp(12px, 1.6vw, 24px);
+}
+
+.navGroup {
+  display: none;
+  gap: var(--space-4);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+}
+
+/* Revision 3: "BARB" tipográfico trocado pela logo real (ver Header.tsx). */
+.logo {
+  width: clamp(96px, 9vw, 120px);
+  height: auto;
+}
+
+.navLink {
+  font-size: var(--text-menu);
+  letter-spacing: 0.04em;
+  /* Revision 2: só a primeira letra maiúscula (como já vem de
+     content/site.ts), não mais tudo em caixa alta. */
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.navLink:hover {
+  text-decoration: underline;
+}
+
+.menuButton {
+  background: none;
+  border: none;
+  font-size: var(--text-menu);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: var(--space-1) var(--space-2);
+  min-height: 44px;
+}
+
+@media (min-width: 768px) {
+  .navGroup {
+    display: flex;
+    align-items: center;
+  }
+
+  .menuButton {
+    display: none;
+  }
+}

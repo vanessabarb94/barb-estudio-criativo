@@ -1,0 +1,213 @@
+@import "../styles/tokens.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--space-10);
+}
+
+body {
+  margin: 0;
+  background: var(--color-offwhite);
+  color: var(--color-graphite);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+video {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+/* ---------- Layout helpers ---------- */
+
+.container {
+  width: 100%;
+  max-width: var(--max-width-content);
+  margin-inline: auto;
+  padding-inline: var(--margin-inline);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Skip link ---------- */
+
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: var(--space-2);
+  z-index: 1000;
+  background: var(--color-graphite);
+  color: var(--color-cream);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--space-1);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: var(--space-2);
+}
+
+/* ---------- Focus visibility (global, never removed without replacement) ---------- */
+
+:focus-visible {
+  outline: var(--focus-outline-width) solid var(--color-graphite);
+  outline-offset: 2px;
+}
+
+.section--dark :focus-visible,
+.on-dark :focus-visible {
+  outline-color: var(--color-cream);
+}
+
+/* ---------- Section transition radius ---------- */
+
+.section-radius-top {
+  border-top-left-radius: var(--radius-section);
+  border-top-right-radius: var(--radius-section);
+}
+
+/* ---------- Textura "por trás da barb" sobre áreas pretas/grafite ---------- */
+/* Revisions 5-8: classe utilitária aplicava `por-tras-da-barb-texture.webp`
+   em opacidade baixa sobre Serviços/Sobre Mim/CTA/Footer, com algumas
+   iterações de tamanho/zoom/movimento.
+   Revision 9: a cliente pediu para tirar de vez — fundo fica chapado
+   (cor sólida do token, sem textura nenhuma). A classe continua
+   declarada (ainda referenciada no JSX dos componentes) mas sem
+   nenhum efeito visual, para não precisar editar cada componente só
+   para remover o nome da classe. */
+.textured-dark-bg {
+  position: relative;
+}
+
+/* ---------- Scroll reveal ---------- */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Marquee ---------- */
+
+.marquee {
+  overflow-x: hidden;
+  overflow-y: visible;
+  position: relative;
+  width: 100%;
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--marquee-duration, 36s) linear infinite;
+}
+
+.marquee.is-paused .marquee__track,
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Hero slow zoom (adaptação própria, não réplica confirmada) ---------- */
+
+@keyframes hero-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
+.hero-kenburns {
+  animation: hero-kenburns 26s ease-in-out infinite alternate;
+}
+
+/* ---------- Reduced motion: remove parallax, deslocamento e loops automáticos ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .marquee__track {
+    animation: none;
+  }
+
+  .hero-kenburns {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

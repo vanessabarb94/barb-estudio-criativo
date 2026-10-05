@@ -1,0 +1,77 @@
+/**
+ * Design tokens — valores exatos de visual-direction.md (v4).
+ * Paleta fixa, sem cores novas. Escala tipográfica em clamp() (valores do
+ * briefing são referência de proporção, não tamanhos fixos).
+ */
+:root {
+  /* Cor */
+  --color-offwhite: #fffefa;
+  --color-cream: #f3f2ec;
+  --color-graphite: #19191a;
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  /* Tipografia (variáveis de fonte preenchidas por next/font em layout.tsx) */
+  --font-sans: var(--font-zalando), system-ui, sans-serif;
+  --font-script: var(--font-luxurious), cursive;
+
+  --text-menu: clamp(14px, 1vw, 16px);
+  --text-hero-title: clamp(64px, 14vw, 200px);
+  /* Revision 2: texto do círculo "Estúdio Criativo" precisa caber em
+     uma linha única em qualquer largura — nunca quebrar. Piso bem mais
+     baixo que o valor original (28px) para permitir reduzir o quanto
+     for preciso antes de quebrar linha (ver Hero.module.css, white-space: nowrap). */
+  --text-hero-script: clamp(13px, 3vw, 56px);
+  /* Revision 2: subtexto do Hero fica bem menor que --text-intro
+     (que continua servindo "O que faço" e outras seções). */
+  --text-hero-subtext: clamp(12px, 1.3vw, 16px);
+  --text-intro: clamp(22px, 3.2vw, 38px);
+  --text-label: clamp(12px, 1vw, 14px);
+  /* Revision 2: títulos de Serviços estavam excessivamente grandes —
+     reduzidos para bem menos da metade do pico anterior (120px/193px),
+     mantendo a proporção entre a variante normal e a script. */
+  --text-service-title: clamp(20px, 3.6vw, 48px);
+  /* Revision 4: fonte script (Luxurious Script) tem caixa-alta/altura-x
+     visualmente menor que a sans no mesmo tamanho de fonte — o valor
+     antigo (28/5.6/72) fazia "Website Design" parecer pequeno ao lado
+     dos títulos sans vizinhos (--text-service-title, 20/3.6/48). Escala
+     aumentada em ~35% para equilibrar o peso visual entre as duas
+     famílias sem invadir a linha (mesma técnica usada para
+     --text-hero-script, que também compensa a fonte script). Usado por
+     "Website Design" e, nesta rodada, também por "Social Media". */
+  --text-service-script: clamp(38px, 7.6vw, 98px);
+  --text-recent-title: clamp(40px, 13vw, 200px);
+  --text-testimonial: clamp(20px, 2.4vw, 36px);
+  --text-about-title: clamp(32px, 4.5vw, 60px);
+  --text-body: clamp(16px, 1.1vw, 18px);
+  /* Revision 2: faixa conceitual ("Criatividade com propósito") e a
+     faixa "por trás da barb" do Sobre mim usam fonte menor que antes. */
+  --text-strip: clamp(12px, 1.4vw, 16px);
+
+  /* Espaço (base 8px) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-7: 56px;
+  --space-8: 64px;
+  --space-9: 72px;
+  --space-10: 80px;
+  --space-11: 88px;
+  --space-12: 96px;
+
+  /* Grid / largura */
+  --max-width-content: 1440px;
+  /* Revision 2: margem lateral reduzida (herdada por todo o site via
+     .container) para os links do header ficarem mais próximos da
+     borda, conforme a referência da cliente. */
+  --margin-inline: clamp(16px, 3vw, 40px);
+
+  /* Raio */
+  --radius-section: clamp(24px, 4vw, 56px);
+
+  /* Foco */
+  --focus-outline-width: 3px;
+}

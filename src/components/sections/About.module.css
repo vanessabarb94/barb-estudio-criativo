@@ -1,0 +1,128 @@
+/* ---------- Faixa "por trás da barb" (loop) ---------- */
+/* Mesmas proporções/cores da faixa conceitual do topo (ver
+   ConceptualStrip.module.css): off-white, texto preto, bordas finas
+   pretas. Decisão: esta faixa continua em loop (ver About.tsx). */
+.strip {
+  background: var(--color-offwhite);
+  color: var(--color-black);
+  border-top: 1px solid var(--color-black);
+  border-bottom: 1px solid var(--color-black);
+  padding-block: var(--space-2);
+  /* Revision 10: a cliente não quer nenhuma possibilidade de scroll
+     vertical nesta faixa — overflow:hidden contém o botão de pausa
+     (ver Marquee.module.css) dentro da faixa, nunca vazando para a
+     seção seguinte; min-height garante espaço suficiente para o botão
+     (alvo de toque de 44px) sem precisar diminuí-lo. */
+  overflow: hidden;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  /* Revision 11: overflow:hidden sozinho não impede gesto de toque
+     vertical em mobile — pan-y (permite panorâmica, ou seja, gesto de
+     arrastar) continua possível mesmo sem scrollbar. `touch-action:
+     pan-x` restringe o gesto de toque nesta faixa ao eixo horizontal,
+     igual ao movimento visual (lateral, não para cima/baixo). Escopado
+     só aqui (não no `.marquee` global) para não tirar o scroll vertical
+     por toque da faixa de trabalhos em movimento, que precisa dele
+     (ver MovingWorkStrip.tsx / briefing original). */
+  touch-action: pan-x;
+}
+
+.stripText {
+  font-size: var(--text-strip);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-inline: var(--space-4);
+  white-space: nowrap;
+}
+
+/* ---------- Seção "Sobre mim" ---------- */
+
+.section {
+  background: var(--color-black);
+  color: var(--color-cream);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.textColumn {
+  padding: var(--space-10) var(--margin-inline);
+  text-align: left;
+}
+
+.photoColumn {
+  position: relative;
+  min-height: clamp(320px, 48vw, 520px);
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0 !important;
+}
+
+.title {
+  font-size: var(--text-about-title);
+  font-weight: 800;
+  line-height: 1.05;
+  margin-bottom: var(--space-5);
+}
+
+.paragraph {
+  max-width: 62ch;
+  margin-bottom: var(--space-4);
+}
+
+.signature {
+  margin-top: var(--space-5);
+  font-weight: 700;
+}
+
+.signatureRole {
+  display: block;
+  font-weight: 400;
+  opacity: 0.75;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-cream);
+  border-radius: 999px;
+  margin-top: var(--space-5);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--text-menu);
+}
+
+.cta:hover {
+  background: var(--color-cream);
+  color: var(--color-graphite);
+}
+
+/* Revision 6: a polaroid (moldura + foto com transform: scale(1.8) sem
+   overflow:hidden no container) causava scroll horizontal na página —
+   removida por completo a pedido da cliente. Fica só a foto principal
+   (.photo) na metade direita. */
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+
+  .textColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+

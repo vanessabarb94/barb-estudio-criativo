@@ -1,0 +1,36 @@
+.section {
+  /* Revision 2: invertida — fundo off-white, texto preto, bordas finas
+     pretas no topo e na base, faixa mais estreita (menos altura). */
+  background: var(--color-offwhite);
+  color: var(--color-black);
+  border-top: 1px solid var(--color-black);
+  border-bottom: 1px solid var(--color-black);
+  padding-block: var(--space-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* Revision 3: a quantidade de repetições é folgada de propósito para
+     cobrir monitores largos — o excesso fica contido aqui. */
+  overflow: hidden;
+}
+
+/* Revision 3: linha única, sem quebra, repetida e centralizada — se
+   sobrar texto além da largura da faixa, ele estoura igualmente nas
+   duas laterais e é cortado por .section (overflow: hidden), ficando
+   sempre visualmente cheia de ponta a ponta. */
+.track {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.text {
+  flex: 0 0 auto;
+  font-size: var(--text-strip);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-inline: var(--space-4);
+  white-space: nowrap;
+}

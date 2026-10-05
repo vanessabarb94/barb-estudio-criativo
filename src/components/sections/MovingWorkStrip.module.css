@@ -1,0 +1,25 @@
+.section {
+  background: var(--color-offwhite);
+  padding-block: var(--space-6);
+}
+
+.tile {
+  width: clamp(200px, 26vw, 320px);
+  height: clamp(150px, 19vw, 240px);
+  /* Revision 2: espaçamento quase zero entre peças — só uma linha fina
+     off-white (o fundo da seção) separando um item do outro. */
+  margin-right: 2px;
+  border-radius: var(--space-1);
+  overflow: hidden;
+  display: block;
+}
+
+.tile:focus-visible {
+  outline-offset: 4px;
+}
+
+.tileImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

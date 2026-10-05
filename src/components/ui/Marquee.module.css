@@ -1,0 +1,28 @@
+.wrapper {
+  position: relative;
+}
+
+.pauseButton {
+  position: absolute;
+  /* Revision 10: centralizado verticalmente (em vez de ancorado no
+     topo) para nunca ultrapassar faixas baixas/estreitas como a
+     "por trás da barb" — evita o botão (min-height 44px, alvo de
+     toque) vazando para fora da faixa. */
+  top: 50%;
+  transform: translateY(-50%);
+  right: var(--margin-inline);
+  z-index: 3;
+  background: var(--color-offwhite);
+  color: var(--color-graphite);
+  border: 1px solid var(--color-graphite);
+  border-radius: 999px;
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  min-height: 44px;
+}
+
+.item {
+  flex: 0 0 auto;
+}

@@ -1,0 +1,253 @@
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--color-graphite);
+  color: var(--color-cream);
+  overflow: hidden;
+  padding: var(--space-8) var(--margin-inline);
+}
+
+/* Revision 5: `vanessa-hero.webp` religada como foto de fundo real. */
+.photoLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.photoLayer img,
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Revision 12: Ken Burns sutil na foto da Hero — zoom lento e contínuo,
+   só pra não ficar estática. `.hero` já tem overflow:hidden, então o
+   zoom nunca vaza da seção. Pausado com prefers-reduced-motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .photo {
+    animation: hero-ken-burns 28s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes hero-ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+/* Scrim mais forte que a versão sem foto (gradiente só na base): com a
+   foto real, o texto/elipse precisam de contraste garantido em toda a
+   altura da seção, não só perto do rodapé. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.3) 45%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+/* Revision 9: logo+oval e subtexto viram 2 Reveal separados (ver
+   Hero.tsx) para um fade up escalonado em vez de um bloco único. */
+.brandGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+/* `.reveal`/`.is-visible` vêm de globals.css (classe global, não de
+   CSS Module) — :global() é necessário para combinar com a classe
+   local .subtextReveal nesta regra. */
+.subtextReveal:global(.reveal) {
+  transition-delay: 0.15s;
+}
+
+.logo {
+  width: clamp(220px, 32vw, 460px);
+  height: auto;
+}
+
+.ellipse {
+  /*
+   * Revision 3: proporção de círculo (quase 1:1) trocada por um oval
+   * achatado — bem mais larga que alta — e padding vertical reduzido
+   * ao mínimo para o texto ocupar quase toda a altura, sem o vão vazio
+   * acima/abaixo que havia antes.
+   *
+   * Revision 4: a razão `50% / 35%` deixava os cantos retos demais
+   * ("achatados"), sem curva de oval de verdade. `border-radius: 50%`
+   * com o MESMO valor nos dois eixos, aplicado a uma caixa retangular,
+   * sempre produz uma elipse perfeita ajustada à proporção
+   * largura/altura da caixa — por isso basta um valor único. Altura e
+   * padding vertical não mudam (já aprovados).
+   */
+  /* Revision 6: largura fixa deixava o oval grande demais em relação ao
+     texto em boa parte dos breakpoints. `width: fit-content` + padding
+     horizontal menor faz o oval abraçar a palavra "Estúdio Criativo",
+     com a margem só do padding abaixo — border-radius: 50% continua
+     gerando uma elipse correta em cima do novo tamanho dinâmico. */
+  width: fit-content;
+  height: clamp(60px, 8vw, 96px);
+  /* Revision 2: a elipse come uma fatia inferior da logo acima. */
+  margin-top: clamp(-56px, -9vw, -28px);
+  border-radius: 50%;
+  border: 1px solid var(--color-cream);
+  /* Estado 1 (padrão, também o estado fixo com prefers-reduced-motion):
+     fundo preto. As 2 camadas abaixo (.ellipseLight/.ellipseTexture)
+     ficam ocultas (opacity: 0) até a media query de animação. */
+  background: var(--color-black);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1) var(--space-3);
+}
+
+/*
+ * Revision 5: animação contínua de 3 combinações de cor no oval
+ * "Estúdio Criativo" (ver revision-5-brief.md):
+ *   1. fundo preto, texto off-white (estado-base acima, sem animação).
+ *   2. fundo off-white, texto preto.
+ *   3. fundo com a textura por-tras-da-barb, texto branco/creme.
+ *
+ * Implementação: 2 camadas sobrepostas (.ellipseLight sólida,
+ * .ellipseTexture com a imagem), cada uma com sua própria opacidade
+ * animada de forma independente — nunca ficam visíveis ao mesmo tempo,
+ * o que já produz o crossfade pedido sem precisar sincronizar troca de
+ * `background-image` (propriedade não interpolável). O texto (.script)
+ * anima só a cor, que É interpolável. z-index: -1 nas camadas +
+ * `isolation: isolate` no .ellipse garantem que elas fiquem atrás do
+ * texto mas não escapem para trás de outras seções da página (mesmo
+ * raciocínio do utilitário .textured-dark-bg em globals.css).
+ *
+ * Revision 6: "pisca" pedido pela cliente é bem mais rápido que um
+ * crossfade ambiente — ciclo reduzido de 18s para 3s.
+ * Revision 7: ainda mais rápido — 3s para 1.2s (mesmo formato de
+ * keyframes em porcentagem, só a duração muda), ficando ~0.33s de hold
+ * por estado + ~0.07s de transição: pisca de verdade. Só roda com
+ * `prefers-reduced-motion: no-preference` — do contrário, as camadas
+ * ficam permanentemente a opacity:0 e o texto na cor base (.script),
+ * fixando no Estado 1.
+ */
+.ellipseLight,
+.ellipseTexture {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+}
+
+.ellipseLight {
+  background: var(--color-offwhite);
+}
+
+.ellipseTexture {
+  background-image: url("/images/por-tras-da-barb-texture.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+.script {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-script);
+  font-size: var(--text-hero-script);
+  color: var(--color-cream);
+  /* Revision 2: nunca quebra em duas linhas — o clamp() do token
+     reduz o tamanho o quanto for preciso para caber em uma linha. */
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ellipseLight {
+    animation: ellipse-light-fade 1.2s ease-in-out infinite;
+  }
+
+  .ellipseTexture {
+    animation: ellipse-texture-fade 1.2s ease-in-out infinite;
+  }
+
+  .script {
+    animation: ellipse-text-color 1.2s ease-in-out infinite;
+  }
+}
+
+@keyframes ellipse-light-fade {
+  0%,
+  27.78% {
+    opacity: 0;
+  }
+  33.33%,
+  61.11% {
+    opacity: 1;
+  }
+  66.67%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ellipse-texture-fade {
+  0%,
+  61.11% {
+    opacity: 0;
+  }
+  66.67%,
+  94.44% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ellipse-text-color {
+  0%,
+  27.78% {
+    color: var(--color-cream);
+  }
+  33.33%,
+  61.11% {
+    color: var(--color-black);
+  }
+  66.67%,
+  100% {
+    color: var(--color-cream);
+  }
+}
+
+.subtext {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+  font-size: var(--text-hero-subtext);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  max-width: 32ch;
+  opacity: 0.9;
+}

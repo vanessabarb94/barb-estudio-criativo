@@ -1,0 +1,147 @@
+.block {
+  margin-bottom: var(--space-9);
+}
+
+.block:last-child {
+  margin-bottom: 0;
+}
+
+.blockHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.blockTitle {
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 800;
+}
+
+/* Revision 9: link "Ver mais projetos" opcional (só usado na prévia da
+   home, via a prop moreHref/moreLabel). */
+.moreLink {
+  font-size: var(--text-menu);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-decoration: underline;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-5);
+}
+
+.card {
+  display: block;
+}
+
+/* Cards de Social Media são <button>, não <Link> (abrem o lightbox
+   direto em vez de navegar para /portfolio/[slug] — ver
+   revision-5-brief.md). Reset de estilo de botão para ficar idêntico
+   visualmente a um card de Link normal. */
+.cardButton {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  color: inherit;
+}
+
+.cardMedia {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--space-1);
+  overflow: hidden;
+  margin-bottom: var(--space-2);
+  background: var(--color-offwhite);
+}
+
+.cardMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Revision 11: capas de Social Media são 1080x1350 (4:5) — a cliente
+   pediu para nunca cortar a arte. Proporção 4:5 + `contain` (em vez do
+   4:3 + cover usado por Marcas/Apresentações) garante a arte inteira
+   visível. Precisa vir depois de `.cardMedia img` acima para vencer por
+   ordem no arquivo (mesma especificidade). */
+.cardMediaSocial {
+  aspect-ratio: 4 / 5;
+}
+
+.cardMediaSocial img {
+  object-fit: contain;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cardTitle {
+  font-weight: 700;
+  font-size: clamp(18px, 2vw, 24px);
+}
+
+.ctaRow {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.contactCta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-graphite);
+  border-radius: 999px;
+  font-size: var(--text-menu);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.contactCta:hover {
+  background: var(--color-graphite);
+  color: var(--color-offwhite);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1440px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+/* Revision 9: a prévia da home (sempre 3 projetos por bloco) usa esta
+   variante para caber os 3 numa única fileira, em vez do grid de 2
+   colunas padrão de /portfolio. */
+@media (min-width: 768px) {
+  .gridCompact {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1440px) {
+  .gridCompact {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
