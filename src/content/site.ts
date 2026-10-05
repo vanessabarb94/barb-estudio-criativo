@@ -278,7 +278,7 @@ export const ABOUT = {
  */
 export const CONTACT = {
   title: "VAMOS DAR FORMA À SUA PRÓXIMA IDEIA?",
-  body: "Me conte por onde começamos. Vamos conversar pelo WhatsApp sobre o seu projeto.",
+  body: "Me conte por onde começamos. Vamos conversar sobre o seu projeto.",
   ctaLabel: "Falar no WhatsApp",
   ctaHref: getWhatsAppLink(WHATSAPP_DEFAULT_MESSAGE),
 };
