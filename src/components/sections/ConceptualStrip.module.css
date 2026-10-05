@@ -34,3 +34,26 @@
   padding-inline: var(--space-4);
   white-space: nowrap;
 }
+
+/* Revision 15: versão mobile — frase única e inteira. A frase mede
+   ~38.4x o tamanho da fonte (Zalando Sans Expanded, caixa alta,
+   letter-spacing 0.04em), então a fonte é a largura útil da tela
+   (100vw - margens) dividida por 39, com teto no tamanho do desktop. */
+.single {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .track {
+    display: none;
+  }
+
+  .single {
+    display: block;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: min(var(--text-strip), calc((100vw - 2 * var(--space-2)) / 39));
+    line-height: 1.6;
+  }
+}

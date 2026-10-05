@@ -17,11 +17,6 @@
 
   --text-menu: clamp(14px, 1vw, 16px);
   --text-hero-title: clamp(64px, 14vw, 200px);
-  /* Revision 2: texto do círculo "Estúdio Criativo" precisa caber em
-     uma linha única em qualquer largura — nunca quebrar. Piso bem mais
-     baixo que o valor original (28px) para permitir reduzir o quanto
-     for preciso antes de quebrar linha (ver Hero.module.css, white-space: nowrap). */
-  --text-hero-script: clamp(13px, 3vw, 56px);
   /* Revision 2: subtexto do Hero fica bem menor que --text-intro
      (que continua servindo "O que faço" e outras seções). */
   --text-hero-subtext: clamp(12px, 1.3vw, 16px);

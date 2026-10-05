@@ -24,6 +24,14 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Revision 15: no mobile (retrato) o "cover" corta as laterais da foto
+     paisagem e o rosto ficava colado na borda direita. Ponto focal
+     deslocado para a direita, onde está o rosto, deixa-o mais perto do
+     centro. No desktop a foto já cabe quase inteira na largura, então
+     a mudança é imperceptível lá. O zoom (Ken Burns) parte do mesmo
+     ponto para não empurrar o rosto de volta para a borda. */
+  object-position: 54% 50%;
+  transform-origin: 54% 40%;
 }
 
 /* Revision 12: Ken Burns sutil na foto da Hero — zoom lento e contínuo,
@@ -71,6 +79,13 @@
 /* Revision 9: logo+oval e subtexto viram 2 Reveal separados (ver
    Hero.tsx) para um fade up escalonado em vez de um bloco único. */
 .brandGroup {
+  /* Revision 15: logo, oval, texto do oval e sobreposição derivam TODOS
+     desta única largura, com as razões medidas no desktop aprovado
+     (logo 460px -> oval 232x96, texto 43px, sobreposição 16px). Antes
+     cada peça tinha seu próprio clamp() e no mobile os pisos não
+     batiam: oval 105x60 (quase redondo) com texto de 13px. Agora o
+     mobile é uma miniatura exata do desktop. */
+  --logo-w: clamp(260px, 32vw, 460px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -85,7 +100,7 @@
 }
 
 .logo {
-  width: clamp(220px, 32vw, 460px);
+  width: var(--logo-w);
   height: auto;
 }
 
@@ -109,9 +124,9 @@
      com a margem só do padding abaixo — border-radius: 50% continua
      gerando uma elipse correta em cima do novo tamanho dinâmico. */
   width: fit-content;
-  height: clamp(60px, 8vw, 96px);
+  height: calc(var(--logo-w) * 0.209);
   /* Revision 2: a elipse come uma fatia inferior da logo acima. */
-  margin-top: clamp(-56px, -9vw, -28px);
+  margin-top: calc(-1 * var(--space-5) - var(--logo-w) * 0.035);
   border-radius: 50%;
   border: 1px solid var(--color-cream);
   /* Estado 1 (padrão, também o estado fixo com prefers-reduced-motion):
@@ -124,7 +139,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-1) var(--space-3);
+  /* Revision 15: sem padding vertical (a altura já é fixa) e padding
+     lateral proporcional — o texto ocupa ~78% da largura do oval,
+     igual ao desktop. */
+  padding: 0 calc(var(--logo-w) * 0.054);
 }
 
 /*
@@ -175,7 +193,8 @@
   position: relative;
   z-index: 1;
   font-family: var(--font-script);
-  font-size: var(--text-hero-script);
+  font-size: calc(var(--logo-w) * 0.094);
+  line-height: 1;
   color: var(--color-cream);
   /* Revision 2: nunca quebra em duas linhas — o clamp() do token
      reduz o tamanho o quanto for preciso para caber em uma linha. */

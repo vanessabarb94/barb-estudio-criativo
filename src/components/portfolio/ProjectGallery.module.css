@@ -21,90 +21,59 @@
   object-fit: cover;
 }
 
+/* Revision 15: visão ampliada em tela cheia — barra fina de controles
+   no topo e a arte (LightboxFrame) ocupando todo o resto, borda a
+   borda no mobile. Setas ficam dentro da arte (ver LightboxFrame). */
 .overlay {
   position: fixed;
   inset: 0;
   z-index: 300;
-  background: rgba(0, 0, 0, 0.92);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--space-5);
+  background: rgba(0, 0, 0, 0.94);
 }
 
-.figure {
-  position: relative;
-  max-width: min(90vw, 1100px);
-  max-height: 85vh;
+.dialog {
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-/* Revision 12: setas ao LADO da imagem (não embaixo) — mesmo padrão da
-   vitrine de Social Media. */
-.stage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  max-width: 100%;
-  max-height: 75vh;
-}
-
-.media {
-  max-width: 100%;
-  max-height: 75vh;
-  object-fit: contain;
-  flex: 1;
-  min-width: 0;
-}
-
-.placeholderMedia {
-  width: min(80vw, 640px);
-  height: 60vh;
 }
 
 .controls {
-  position: absolute;
-  top: calc(var(--space-5) * -1);
-  right: calc(var(--space-5) * -1);
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--space-2) var(--margin-inline);
 }
 
-.closeButton,
-.navButton {
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: var(--space-2);
+}
+
+.placeholderMedia {
+  width: min(100vw, 640px);
+  height: 60vh;
+}
+
+.closeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--color-cream);
+  background: none;
+  color: var(--color-cream);
+  font-size: 18px;
+}
+
+.closeButton:hover {
   background: var(--color-cream);
   color: var(--color-graphite);
-  border: none;
-  border-radius: 999px;
-  min-height: 44px;
-  min-width: 44px;
-  padding: var(--space-1) var(--space-3);
-}
-
-.navButton {
-  flex: 0 0 auto;
-  font-size: 20px;
-}
-
-/* Sem estilo próprio — existem só para dar nome semântico ao lado de
-   cada seta no JSX (a posição em si já vem da ordem no .stage, que é
-   flex). */
-.navButtonLeft,
-.navButtonRight {
-}
-
-@media (min-width: 768px) {
-  .navButton {
-    min-width: 56px;
-    min-height: 56px;
-    font-size: 24px;
-  }
-
-  .stage {
-    gap: var(--space-6);
-  }
 }
 
 @media (min-width: 768px) {

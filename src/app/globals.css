@@ -33,9 +33,14 @@ a {
   text-decoration: none;
 }
 
+/* Revision 15: `color: inherit` — sem isso o Safari do iPhone pinta o
+   texto de todo <button> com o azul padrão do sistema (ex. "Abrir
+   menu" no header mobile). */
 button {
   font-family: inherit;
+  color: inherit;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 ul,

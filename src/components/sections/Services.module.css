@@ -24,6 +24,10 @@
 }
 
 .titleGroup {
+  /* Revision 15: container para o CTA medir a largura da própria
+     coluna (ver .cta). */
+  container-type: inline-size;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -61,6 +65,21 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   width: fit-content;
+  /* Revision 15: sempre em uma linha. No mobile a fonte encolhe até o
+     botão caber na coluna — o rótulo mede ~22.6x o tamanho da fonte;
+     2px de borda + padding lateral descontados. */
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .row {
+    column-gap: var(--space-2);
+  }
+
+  .cta {
+    padding-inline: var(--space-2);
+    font-size: min(var(--text-menu), calc((100cqi - 2 * var(--space-2) - 4px) / 23));
+  }
 }
 
 .cta:hover {

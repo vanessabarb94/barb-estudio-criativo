@@ -1,0 +1,93 @@
+/* Revision 15: ver LightboxFrame.tsx.
+   --lb-max-w / --lb-max-h: espaço disponível para a arte. No mobile,
+   largura total da tela (borda a borda) e altura da tela menos a barra
+   de controles do topo. `dvh` acompanha a barra de endereço do Safari;
+   `vh` fica como fallback para navegadores antigos. */
+.frame {
+  --lb-max-w: 100vw;
+  --lb-max-h: calc(100vh - 96px);
+  --lb-max-h: calc(100dvh - 96px);
+  position: relative;
+  width: min(var(--lb-max-w), calc(var(--lb-max-h) * var(--ar)));
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+}
+
+.media {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  aspect-ratio: var(--ar);
+  object-fit: contain;
+  -webkit-user-drag: none;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 242, 236, 0.7);
+  background: rgba(25, 25, 26, 0.55);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--color-cream);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.arrow:hover {
+  background: var(--color-cream);
+  color: var(--color-graphite);
+}
+
+.arrowLeft {
+  left: var(--space-1);
+}
+
+.arrowRight {
+  right: var(--space-1);
+}
+
+.counter {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  z-index: 1;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(25, 25, 26, 0.6);
+  color: var(--color-white);
+  font-size: var(--text-label);
+  letter-spacing: 0.04em;
+}
+
+@media (min-width: 768px) {
+  .frame {
+    --lb-max-w: min(calc(100vw - 2 * var(--space-6)), 1400px);
+    --lb-max-h: calc(100vh - 128px);
+    --lb-max-h: calc(100dvh - 128px);
+  }
+
+  .arrow {
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
+  }
+
+  .arrowLeft {
+    left: var(--space-3);
+  }
+
+  .arrowRight {
+    right: var(--space-3);
+  }
+}

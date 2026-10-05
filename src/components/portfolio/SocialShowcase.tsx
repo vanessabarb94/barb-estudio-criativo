@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import type { Project, ProjectMedia } from "@/content/projects";
 import { MICROCOPY } from "@/content/site";
 import { useFocusTrap } from "@/lib/useFocusTrap";
+import LightboxFrame from "@/components/ui/LightboxFrame";
 import styles from "./SocialShowcase.module.css";
 
 /**
@@ -41,6 +42,11 @@ import styles from "./SocialShowcase.module.css";
  * frame que já estava selecionado ali; next/prev para outro post volta
  * ao primeiro frame desse novo post (mesmo comportamento do feed do
  * Instagram).
+ *
+ * Revision 15: a peça aberta ficava pequena no mobile. A visão ampliada
+ * passa a usar LightboxFrame (compartilhado com Marcas/Apresentações):
+ * o post ocupa a largura inteira da tela, como no feed do Instagram,
+ * com as setas dentro da arte e swipe para trocar de post.
  */
 
 type Tile =
@@ -210,38 +216,27 @@ export default function SocialShowcase({
               </button>
             </div>
 
-            <div className={styles.lightboxStage}>
-              {openableTileIndexes.length > 1 && (
-                <button
-                  type="button"
-                  className={`${styles.lightboxArrow} ${styles.lightboxArrowLeft}`}
-                  aria-label={MICROCOPY.lightboxPrev}
-                  onClick={() => goLightbox(-1)}
-                >
-                  ←
-                </button>
-              )}
-
+            <div
+              className={styles.lightboxStage}
+              onClick={(event) => {
+                if (event.target === event.currentTarget) openTileAt(null);
+              }}
+            >
               {current.src && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <LightboxFrame
+                  key={current.id}
                   src={current.src}
                   alt={current.alt}
                   width={current.width}
                   height={current.height}
-                  className={styles.lightboxMedia}
+                  onPrev={openableTileIndexes.length > 1 ? () => goLightbox(-1) : undefined}
+                  onNext={openableTileIndexes.length > 1 ? () => goLightbox(1) : undefined}
+                  counter={
+                    openableTileIndexes.length > 1 && openTile !== null
+                      ? `${openableTileIndexes.indexOf(openTile) + 1}/${openableTileIndexes.length}`
+                      : undefined
+                  }
                 />
-              )}
-
-              {openableTileIndexes.length > 1 && (
-                <button
-                  type="button"
-                  className={`${styles.lightboxArrow} ${styles.lightboxArrowRight}`}
-                  aria-label={MICROCOPY.lightboxNext}
-                  onClick={() => goLightbox(1)}
-                >
-                  →
-                </button>
               )}
             </div>
           </div>

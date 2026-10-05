@@ -182,7 +182,7 @@
   justify-content: flex-end;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-4) var(--margin-inline);
+  padding: var(--space-2) var(--margin-inline);
 }
 
 .lightboxBackHome {
@@ -217,49 +217,15 @@
   color: var(--color-graphite);
 }
 
+/* Revision 15: a arte usa LightboxFrame (largura total no mobile,
+   setas dentro da arte) — o estágio só centraliza. */
 .lightboxStage {
   flex: 1;
   min-height: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3);
-  padding: 0 var(--margin-inline) var(--space-6);
-}
-
-.lightboxMedia {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  flex: 1;
-  min-width: 0;
-}
-
-.lightboxArrow {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  min-height: 44px;
-  border-radius: 999px;
-  border: 1px solid var(--color-cream);
-  background: rgba(25, 25, 26, 0.6);
-  color: var(--color-cream);
-  font-size: 20px;
-}
-
-.lightboxArrow:hover {
-  background: var(--color-cream);
-  color: var(--color-graphite);
-}
-
-/* Sem estilo próprio — a posição já vem da ordem no .lightboxStage
-   (flex); existem só para dar nome semântico a cada seta no JSX. */
-.lightboxArrowLeft,
-.lightboxArrowRight {
+  padding-bottom: var(--space-2);
 }
 
 @media (min-width: 768px) {
@@ -268,15 +234,6 @@
     gap: var(--space-5);
   }
 
-  .lightboxStage {
-    gap: var(--space-6);
-  }
-
-  .lightboxArrow {
-    min-width: 56px;
-    min-height: 56px;
-    font-size: 24px;
-  }
 }
 
 /* Revision 12: a cliente pediu para a grade nunca passar de 3 colunas,
@@ -284,5 +241,32 @@
 @media (min-width: 1440px) {
   .grid {
     gap: var(--space-6);
+  }
+}
+
+/* Revision 15: no mobile o título + "← Voltar ao portfólio" não cabiam
+   na mesma linha e o botão vazava pra fora da tela (scroll lateral).
+   Botão menor e, se ainda faltar espaço, o título quebra linha. */
+@media (max-width: 767px) {
+  .header {
+    padding-block: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+
+  .header .closeButton,
+  .lightboxBackHome {
+    min-height: 40px;
+    padding: 0 var(--space-2);
+    font-size: 11px;
+  }
+
+  .title {
+    min-width: 0;
+    font-size: 18px;
+    line-height: 1.15;
+  }
+
+  .grid {
+    gap: var(--space-2);
   }
 }

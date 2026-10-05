@@ -24,6 +24,12 @@ import { usePathname } from "next/navigation";
  * continua suave), força um scroll pro topo INSTANTÂNEO, desligando
  * temporariamente o `scroll-behavior: smooth` via style inline (maior
  * especificidade que a regra do CSS) só durante esse reset.
+ *
+ * Revision 15: "← Voltar ao portfólio" (link para /#portfolio) caía
+ * na Hero — este reset rodava DEPOIS do Next rolar até a âncora e
+ * jogava a página de volta pro topo. Quando a URL tem hash, o reset
+ * rola até a seção da âncora (instantâneo, respeitando o
+ * scroll-padding-top do header) em vez do topo.
  */
 export default function RouteScrollReset() {
   const pathname = usePathname();
@@ -32,7 +38,10 @@ export default function RouteScrollReset() {
     const root = document.documentElement;
     const previous = root.style.scrollBehavior;
     root.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
+    const hash = window.location.hash.slice(1);
+    const target = hash ? document.getElementById(decodeURIComponent(hash)) : null;
+    if (target) target.scrollIntoView({ block: "start" });
+    else window.scrollTo(0, 0);
     root.style.scrollBehavior = previous;
   }, [pathname]);
 
