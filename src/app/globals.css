@@ -152,7 +152,6 @@ p {
   animation: marquee-scroll var(--marquee-duration, 36s) linear infinite;
 }
 
-.marquee.is-paused .marquee__track,
 .marquee:hover .marquee__track,
 .marquee:focus-within .marquee__track {
   animation-play-state: paused;

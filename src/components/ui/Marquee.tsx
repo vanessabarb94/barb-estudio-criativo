@@ -1,7 +1,4 @@
-"use client";
-
-import { useState, type ReactNode } from "react";
-import { MICROCOPY } from "@/content/site";
+import type { ReactNode } from "react";
 import styles from "./Marquee.module.css";
 
 /**
@@ -12,8 +9,9 @@ import styles from "./Marquee.module.css";
  *
  * - Conteúdo duplicado uma vez para loop sem salto; a cópia é
  *   `aria-hidden` (texto/itens decorativos não são lidos duas vezes).
- * - Pausa automática no hover/focus-within (CSS) + botão de pausa
- *   sempre visível (não só no hover), com `aria-pressed`.
+ * - Pausa automática no hover/focus-within (CSS) e animação desligada
+ *   com prefers-reduced-motion. Sem botão de pausa visível (pedido da
+ *   cliente: no mobile ele cobria o conteúdo).
  * - Nunca captura `wheel`/`touchmove`; `overflow-x` fica contido no
  *   próprio componente, nunca no body.
  */
@@ -26,22 +24,11 @@ export default function Marquee({
   ariaLabel: string;
   durationSeconds?: number;
 }) {
-  const [isPaused, setIsPaused] = useState(false);
-
   return (
     <div
-      className={`marquee ${styles.wrapper} ${isPaused ? "is-paused" : ""}`.trim()}
+      className={`marquee ${styles.wrapper}`}
       style={{ "--marquee-duration": `${durationSeconds}s` } as React.CSSProperties}
     >
-      <button
-        type="button"
-        className={styles.pauseButton}
-        aria-pressed={isPaused}
-        onClick={() => setIsPaused((paused) => !paused)}
-      >
-        {isPaused ? MICROCOPY.resumeMarquee : MICROCOPY.pauseMarquee}
-      </button>
-
       <div className="marquee__track" role="group" aria-label={ariaLabel}>
         <div style={{ display: "flex" }}>{children}</div>
         <div style={{ display: "flex" }} aria-hidden="true">

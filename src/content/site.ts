@@ -300,8 +300,6 @@ export const MICROCOPY = {
   skipLink: "Pular para o conteúdo",
   menuOpen: "Abrir menu",
   menuClose: "Fechar menu",
-  pauseMarquee: "Pausar animação",
-  resumeMarquee: "Retomar animação",
   lightboxClose: "Fechar",
   lightboxPrev: "Imagem anterior",
   lightboxNext: "Próxima imagem",
