@@ -211,7 +211,7 @@ const vitoriaNalevaikoGallery = buildGallery(
  * assumida por nome de arquivo). A capa ("CAPA VITRINE") também é uma
  * célula da grade — não fica de fora, entra na posição que ocupa na
  * referência (varia por projeto: é a 1ª peça para Gilberto, mas a 4ª
- * para Growth, a 7ª pra IAM, a 5ª pra Laços, a última pra MJ). Nayara
+ * para Growth, a 5ª pra Laços, a última pra MJ). Nayara
  * Rocha (social) não tinha CAPA VITRINE própria — segue só com as 9
  * peças soltas, já na ordem 1-9 da grade de referência.
  */
@@ -250,25 +250,6 @@ const growthSolutionsGallery = buildMixedGallery(
     item.type === "video"
       ? `Vídeo de social media — Growth Solutions, peça ${i}`
       : `Social media — Growth Solutions, peça ${i}`
-);
-
-const iamGallery = buildMixedGallery(
-  "iam",
-  [
-    { type: "image" as const, file: "/projects/iam/art-06.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-07.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-08.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-05.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-04.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-03.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/vitrine.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-02.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-01.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-11.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-10.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/iam/art-09.webp", width: 1080, height: 1350 },
-  ],
-  (_item, i) => `Social media — IAM&Co., peça ${i}`
 );
 
 const lacosUnidosGallery = buildMixedGallery(
@@ -336,25 +317,14 @@ const amandaFerrazGallery = buildGallery(
   (i, total) => `Apresentação Amanda Ferraz — slide ${String(i).padStart(2, "0")} de ${total}`
 );
 
-const anneGalanteGallery = buildGallery(
-  "anne-galante",
-  Array.from({ length: 16 }, (_, i) => ({
-    file: `/projects/anne-galante/img-${String(i + 1).padStart(2, "0")}.webp`,
-    width: 1177,
-    height: 840,
-  })),
-  (i, total) =>
-    `Apresentação do Festival Agulhas Ativar (Anne Galante) — slide ${String(i).padStart(2, "0")} de ${total}`
-);
-
-const coritibaFutsalGallery = buildGallery(
-  "coritiba-futsal",
+const coritibaFootballGallery = buildGallery(
+  "coritiba-football",
   Array.from({ length: 15 }, (_, i) => ({
-    file: `/projects/coritiba-futsal/img-${String(i + 1).padStart(2, "0")}.webp`,
+    file: `/projects/coritiba-football/img-${String(i + 1).padStart(2, "0")}.webp`,
     width: 1680,
     height: 798,
   })),
-  (i, total) => `Apresentação Coritiba Futsal — slide ${String(i).padStart(2, "0")} de ${total}`
+  (i, total) => `Apresentação Coritiba Football — slide ${String(i).padStart(2, "0")} de ${total}`
 );
 
 const speakupGallery = buildGallery(
@@ -508,22 +478,6 @@ export const PROJECTS: Project[] = [
     isPlaceholder: false,
   },
   {
-    slug: "iam",
-    title: "IAM&Co.",
-    category: "social",
-    summary: "Social media para IAM&Co.",
-    participation: "criação autoral",
-    cover: {
-      src: "/projects/iam/vitrine.webp",
-      alt: "Social media IAM&Co. — arte de vitrine",
-      width: 1080,
-      height: 1350,
-    },
-    gallery: iamGallery,
-    order: 9,
-    isPlaceholder: false,
-  },
-  {
     slug: "lacos-unidos",
     title: "Laços Unidos",
     category: "social",
@@ -582,24 +536,13 @@ export const PROJECTS: Project[] = [
     isPlaceholder: false,
   },
   {
-    slug: "anne-galante",
-    title: "Anne Galante",
+    slug: "coritiba-football",
+    title: "Coritiba Football",
     category: "apresentacoes",
-    summary: "Apresentação para o Festival Agulhas Ativar, de Anne Galante.",
+    summary: "Apresentação institucional para o Coritiba Football (Coritiba Foot Ball Club).",
     participation: "criação autoral",
-    cover: coverFromGallery(anneGalanteGallery),
-    gallery: anneGalanteGallery,
-    order: 14,
-    isPlaceholder: false,
-  },
-  {
-    slug: "coritiba-futsal",
-    title: "Coritiba Futsal",
-    category: "apresentacoes",
-    summary: "Apresentação institucional para o Coritiba Futsal (Coritiba Foot Ball Club).",
-    participation: "criação autoral",
-    cover: coverFromGallery(coritibaFutsalGallery),
-    gallery: coritibaFutsalGallery,
+    cover: coverFromGallery(coritibaFootballGallery),
+    gallery: coritibaFootballGallery,
     order: 15,
     isPlaceholder: false,
   },

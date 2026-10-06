@@ -191,13 +191,16 @@ export const PORTFOLIO_PREVIEW_BLOCKS: PortfolioPreviewBlock[] = [
   {
     title: "Social Media",
     category: "social",
-    // Revision 10: ordem pedida pela cliente.
-    projectSlugs: ["iam", "growth-solutions", "lacos-unidos"],
+    // Revision 10: ordem pedida pela cliente. IAM&Co. saiu (ainda não
+    // aprovada) — Gilberto Tesser entra no lugar.
+    projectSlugs: ["gilberto-tesser", "growth-solutions", "lacos-unidos"],
   },
   {
     title: "Apresentações",
     category: "apresentacoes",
-    projectSlugs: ["amanda-ferraz", "anne-galante", "coritiba-futsal"],
+    // Anne Galante saiu (projeto ainda não aprovado) — SpeakUp entra
+    // para manter os 3 cards.
+    projectSlugs: ["amanda-ferraz", "coritiba-football", "speakup"],
   },
 ];
 
