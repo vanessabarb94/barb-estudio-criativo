@@ -199,7 +199,8 @@ export const PORTFOLIO_PREVIEW_BLOCKS: PortfolioPreviewBlock[] = [
   {
     title: "Storymaker e Edição de Vídeos",
     category: "videos",
-    projectSlugs: ["cobertura-eventos", "videos-ads"],
+    // Revision 18: nova seção Reels completa a fileira de 3.
+    projectSlugs: ["cobertura-eventos", "videos-ads", "reels"],
   },
   {
     title: "Apresentações",
@@ -207,6 +208,13 @@ export const PORTFOLIO_PREVIEW_BLOCKS: PortfolioPreviewBlock[] = [
     // Anne Galante saiu (projeto ainda não aprovado) — SpeakUp entra
     // para manter os 3 cards.
     projectSlugs: ["amanda-ferraz", "coritiba-football", "speakup"],
+  },
+  {
+    // Revision 18: seção própria de Personalizados na home (a caixa da
+    // Corriela saiu da faixa animada, que é só de marcas).
+    title: "Personalizados",
+    category: "personalizados",
+    projectSlugs: ["corriela"],
   },
 ];
 

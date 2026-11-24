@@ -25,9 +25,9 @@ import styles from "./MovingWorkStrip.module.css";
  */
 export default function MovingWorkStrip() {
   const items = getProjectsOrdered()
-    // Revision 16: o personalizado da Corriela (caixa da marca) também
-    // entra na faixa, junto das identidades de marca.
-    .filter((project) => project.category === "marcas" || project.category === "personalizados")
+    // Revision 18: a faixa é só de marcas — Personalizados (Corriela)
+    // tem seção própria.
+    .filter((project) => project.category === "marcas")
     .filter((project) => project.cover || project.gallery.length > 0)
     .map((project) => ({
       key: project.slug,

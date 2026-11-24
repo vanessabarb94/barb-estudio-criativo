@@ -465,6 +465,30 @@ const videosAdsGallery = buildVideoGallery(
   "Vídeo gravado para anúncio"
 );
 
+/* Revision 18: seção "Reels" — reaproveita os mesmos MP4 já publicados
+ * em IANKE e Instituto Escale (nenhum vídeo duplicado), com capas
+ * verticais 9:16 próprias para a grade de vídeos. */
+const reelsGallery: ProjectMedia[] = [
+  {
+    src: "/projects/ianke/reels-kit-viagem.mp4",
+    poster: "/projects/ianke/reels-kit-viagem-poster-916.webp",
+    alt: "Reels Kit de viagem — IANKE Agência de Viagens",
+  },
+  {
+    src: "/projects/instituto-escale/reels-2.mp4",
+    poster: "/projects/instituto-escale/reels-2-poster-916.webp",
+    alt: "Reels Você resolve a causa ou o sintoma? — Instituto Escale",
+  },
+].map((video, index) => ({
+  id: `reels-g${index + 1}`,
+  type: "video" as const,
+  ...video,
+  width: 720,
+  height: 1280,
+  order: index + 1,
+  isPlaceholder: false,
+}));
+
 /* ---------- Revision 16: Websites ---------- */
 
 const thaisNalevaikoGallery = buildGallery(
@@ -766,6 +790,22 @@ export const PROJECTS: Project[] = [
     order: 15,
     isPlaceholder: false,
   },
+  {
+    slug: "reels",
+    title: "Reels",
+    category: "videos",
+    summary: "Reels gravados e editados para social media: IANKE Agência de Viagens e Instituto Escale.",
+    participation: "criação autoral",
+    cover: {
+      src: "/projects/ianke/reels-kit-viagem-poster.webp",
+      alt: "Reels Kit de viagem — IANKE Agência de Viagens",
+      width: 1080,
+      height: 1350,
+    },
+    gallery: reelsGallery,
+    order: 16,
+    isPlaceholder: false,
+  },
 
   // --- Apresentações (ordem alfabética) ---
   {
@@ -778,7 +818,7 @@ export const PROJECTS: Project[] = [
     participation: "criação autoral em parceria com o Estúdio LOOPALHAMA",
     cover: coverFromGallery(amandaFerrazGallery),
     gallery: amandaFerrazGallery,
-    order: 16,
+    order: 17,
     isPlaceholder: false,
   },
   {
@@ -789,7 +829,7 @@ export const PROJECTS: Project[] = [
     participation: "criação autoral",
     cover: coverFromGallery(coritibaFootballGallery),
     gallery: coritibaFootballGallery,
-    order: 17,
+    order: 18,
     isPlaceholder: false,
   },
   {
@@ -803,7 +843,7 @@ export const PROJECTS: Project[] = [
     participation: "criação autoral",
     cover: coverFromGallery(speakupGallery),
     gallery: speakupGallery,
-    order: 18,
+    order: 19,
     isPlaceholder: false,
   },
 
@@ -822,7 +862,7 @@ export const PROJECTS: Project[] = [
     },
     liveUrl: "/sites/thais-nalevaiko/index.html",
     gallery: thaisNalevaikoGallery,
-    order: 19,
+    order: 20,
     isPlaceholder: false,
   },
 
@@ -840,7 +880,7 @@ export const PROJECTS: Project[] = [
       height: 1001,
     },
     gallery: corrielaGallery,
-    order: 20,
+    order: 21,
     isPlaceholder: false,
   },
 ];
