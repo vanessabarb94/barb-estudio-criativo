@@ -270,3 +270,20 @@
     gap: var(--space-2);
   }
 }
+
+/* Revision 16: aba "Storymaker e Edição de Vídeos" — vídeos verticais
+   (9:16) inteiros, sem corte. Tiles na proporção do vídeo e grade com
+   largura limitada para cada vídeo caber na altura da tela. */
+.gridVideos {
+  max-width: 1040px;
+  margin-inline: auto;
+}
+
+.gridVideos .tile {
+  aspect-ratio: 9 / 16;
+  background: var(--color-black);
+}
+
+.gridVideos .tile img {
+  object-fit: cover;
+}

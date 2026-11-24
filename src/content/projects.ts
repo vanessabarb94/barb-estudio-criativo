@@ -37,6 +37,11 @@ export type ProjectMedia = {
    * tile por frame.
    */
   carouselGroup?: string;
+  /**
+   * Revision 16: vídeo curto sem som que roda sozinho em loop no tile
+   * (ex. post animado da IAM & Co.), em vez de mostrar poster + play.
+   */
+  autoplayLoop?: boolean;
 };
 
 export type Participation =
@@ -62,6 +67,13 @@ export type Project = {
   summary: string;
   participation: Participation;
   cover?: ProjectCover;
+  /**
+   * Revision 16: capa em vídeo (mudo, em loop) no card do projeto —
+   * `cover` continua obrigatório como poster/fallback.
+   */
+  coverVideo?: string;
+  /** Revision 16: link para ver o trabalho funcionando (ex. website). */
+  liveUrl?: string;
   gallery: ProjectMedia[];
   order: number;
   isPlaceholder: boolean;
@@ -108,6 +120,7 @@ type MixedMediaSpec = {
   width: number;
   height: number;
   carouselGroup?: string;
+  autoplayLoop?: boolean;
 };
 
 function buildMixedGallery(
@@ -126,8 +139,25 @@ function buildMixedGallery(
     order: index + 1,
     isPlaceholder: false,
     carouselGroup: item.carouselGroup,
+    autoplayLoop: item.autoplayLoop,
   }));
 }
+
+/* Atalhos para montar grades de Social Media (Revision 16). Todas as
+ * peças de feed são 1080x1350 (4:5); posters de reels foram recortados
+ * para 4:5 para casar com a grade, o vídeo em si toca inteiro (9:16). */
+const post = (file: string): MixedMediaSpec => ({ type: "image", file, width: 1080, height: 1350 });
+const carousel = (group: string, files: string[]): MixedMediaSpec[] =>
+  files.map((file) => ({ type: "carousel", carouselGroup: group, file, width: 1080, height: 1350 }));
+const reel = (src: string, poster: string): MixedMediaSpec => ({
+  type: "video",
+  src,
+  poster,
+  width: 1080,
+  height: 1350,
+});
+const seq = (prefix: string, count: number) =>
+  Array.from({ length: count }, (_, i) => `${prefix}-${String(i + 1).padStart(2, "0")}.webp`);
 
 function coverFromGallery(gallery: ProjectMedia[]): ProjectCover | undefined {
   const first = gallery[0];
@@ -216,45 +246,101 @@ const vitoriaNalevaikoGallery = buildGallery(
  * peças soltas, já na ordem 1-9 da grade de referência.
  */
 
-const gilbertoTesserGallery = buildMixedGallery(
-  "gilberto-tesser",
-  [
-    { type: "image" as const, file: "/projects/gilberto-tesser/vitrine.webp", width: 508, height: 508 },
-    ...[2, 3, 4, 5, 6].map((n) => ({
-      type: "image" as const,
-      file: `/projects/gilberto-tesser/gilberto-0${n}.webp`,
-      width: 507,
-      height: 508,
-    })),
-  ],
-  (_item, i) => `Retrato médico com tipografia editorial — Gilberto Tesser, peça ${i}`
-);
+/* Revision 16: Gilberto Tesser, Growth Solutions e Nayara Rocha (social)
+ * saíram do portfólio a pedido da cliente. Entraram IAM & Co., IANKE e
+ * Instituto Escale — ordem de cada grade conferida peça a peça contra os
+ * prints de referência enviados pela cliente. */
 
-const growthSolutionsGallery = buildMixedGallery(
-  "growth-solutions",
+const I = "/projects/iam-co";
+const iamCoGallery = buildMixedGallery(
+  "iam-co",
   [
-    { type: "image" as const, file: "/projects/growth-solutions/growth-01-1080x1350.webp", width: 1080, height: 1350 },
-    { type: "video" as const, src: "/projects/growth-solutions/video-1.mp4", poster: "/projects/growth-solutions/video-1-poster.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/growth-solutions/growth-03-1080x1350.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/growth-solutions/vitrine.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/growth-solutions/growth-05-1080x1350.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/growth-solutions/growth-06-1080x1350.webp", width: 1080, height: 1350 },
-    { type: "video" as const, src: "/projects/growth-solutions/video-2.mp4", poster: "/projects/growth-solutions/video-2-poster.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/growth-solutions/growth-08-1080x1350.webp", width: 1080, height: 1350 },
-    { type: "video" as const, src: "/projects/growth-solutions/video-3.mp4", poster: "/projects/growth-solutions/video-3-poster.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/growth-solutions/growth-10-1080x1350.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/growth-solutions/growth-11-1080x1350.webp", width: 1080, height: 1350 },
-    { type: "image" as const, file: "/projects/growth-solutions/growth-12-1080x1350.webp", width: 1080, height: 1350 },
+    // Destaque pedido pela cliente: o post animado abre a grade.
+    {
+      type: "video",
+      src: `${I}/post-animado.mp4`,
+      poster: `${I}/post-animado-poster.webp`,
+      width: 1080,
+      height: 1350,
+      autoplayLoop: true,
+    },
+    ...carousel("zara", seq(`${I}/zara`, 8)),
+    post(`${I}/in-focus.webp`),
+    ...carousel("vogue", seq(`${I}/vogue`, 7)),
+    post(`${I}/lets-talk.webp`),
+    post(`${I}/we-decode-culture.webp`),
+    post(`${I}/why-culture-matters.webp`),
+    post(`${I}/point-of-view.webp`),
+    post(`${I}/our-method.webp`),
+    post(`${I}/what-we-do.webp`),
+    post(`${I}/iam-decodes.webp`),
+    post(`${I}/consumer.webp`),
+    post(`${I}/brand.webp`),
+    post(`${I}/clients.webp`),
+    post(`${I}/founder.webp`),
+    post(`${I}/iam-and-co.webp`),
   ],
   (item, i) =>
     item.type === "video"
-      ? `Vídeo de social media — Growth Solutions, peça ${i}`
-      : `Social media — Growth Solutions, peça ${i}`
+      ? "Post animado de social media — IAM & Co."
+      : item.carouselGroup
+        ? `Carrossel de imprensa — IAM & Co. (${item.carouselGroup === "zara" ? "Zara" : "Vogue"}), frame ${i}`
+        : `Social media de cultura, consumo e luxo — IAM & Co., peça ${i}`
 );
 
+const K = "/projects/ianke";
+const iankeGallery = buildMixedGallery(
+  "ianke",
+  [
+    post(`${K}/black-november-capa.webp`),
+    reel(`${K}/reels-kit-viagem.mp4`, `${K}/reels-kit-viagem-poster.webp`),
+    ...carousel("lista-dos-sonhos", seq(`${K}/lista-sonhos`, 7)),
+    reel(`${K}/reels-hotel.mp4`, `${K}/reels-hotel-poster.webp`),
+    post(`${K}/memorias.webp`),
+    ...carousel("lugares", seq(`${K}/lugares`, 5)),
+    ...carousel("choque-cultural", seq(`${K}/choque-cultural`, 6)),
+    reel(`${K}/reels-cruzeiro.mp4`, `${K}/reels-cruzeiro-poster.webp`),
+    // Fecha a grade de 9 com o carrossel de Black November (versão feed).
+    ...carousel("black-november", seq(`${K}/black-november`, 6)),
+  ],
+  (item, i) =>
+    item.type === "video"
+      ? `Reels de social media — IANKE Agência de Viagens, peça ${i}`
+      : item.carouselGroup
+        ? `Carrossel de social media — IANKE Agência de Viagens, frame ${i}`
+        : `Social media — IANKE Agência de Viagens, peça ${i}`
+);
+
+const E = "/projects/instituto-escale";
+const institutoEscaleGallery = buildMixedGallery(
+  "instituto-escale",
+  [
+    reel(`${E}/reels-1.mp4`, `${E}/reels-1-poster.webp`),
+    ...carousel("carrossel", seq(`${E}/carrossel`, 5)),
+    reel(`${E}/reels-2.mp4`, `${E}/reels-2-poster.webp`),
+    post(`${E}/estatico.webp`),
+  ],
+  (item, i) =>
+    item.type === "video"
+      ? `Reels de social media — Instituto Escale, peça ${i}`
+      : item.carouselGroup
+        ? `Carrossel de social media — Instituto Escale, frame ${i}`
+        : `Social media — Instituto Escale, peça ${i}`
+);
+
+const L = "/projects/lacos-unidos";
 const lacosUnidosGallery = buildMixedGallery(
   "lacos-unidos",
   [
+    // Revision 16: posts de novembro entram no topo da grade (mais recentes),
+    // na ordem numerada das pastas enviadas pela cliente.
+    reel(`${L}/novembro-reels-1.mp4`, `${L}/novembro-reels-1-poster.webp`),
+    ...carousel("novembro-desafio", seq(`${L}/novembro-carrossel-a`, 3)),
+    post(`${L}/novembro-saudade.webp`),
+    ...carousel("novembro-o-que-e", seq(`${L}/novembro-carrossel-b`, 5)),
+    reel(`${L}/novembro-reels-2.mp4`, `${L}/novembro-reels-2-poster.webp`),
+    post(`${L}/novembro-frase.webp`),
+    post(`${L}/novembro-doacoes.webp`),
     ...[1, 2, 3, 4, 5].map((n) => ({
       type: "carousel" as const,
       carouselGroup: "carrossel-1",
@@ -294,15 +380,101 @@ const mjGallery = buildMixedGallery(
   (_item, i) => `Social media de interiores de luxo — MJ, peça ${i}`
 );
 
-const nayaraRochaSocialGallery = buildMixedGallery(
-  "nayara-rocha-social",
-  Array.from({ length: 9 }, (_, i) => ({
-    type: "image" as const,
-    file: `/projects/nayara-rocha-social/img-${String(i + 1).padStart(2, "0")}.webp`,
-    width: 1080,
-    height: 1350,
+/* ---------- Revision 16: novas marcas (páginas dos PDFs de apresentação) ---------- */
+
+const coralTelemacoBorbaGallery = buildGallery(
+  "coral-telemaco-borba",
+  Array.from({ length: 11 }, (_, i) => ({
+    file: `/projects/coral-telemaco-borba/img-${String(i + 1).padStart(2, "0")}.webp`,
+    width: 2000,
+    height: 1414,
   })),
-  (_item, i) => `Social media da barbearia Nayara Rocha, peça ${i}`
+  (i) => `Identidade visual Coral Municipal de Telêmaco Borba — aplicação ${i}`
+);
+
+const acaliaGallery = buildGallery(
+  "acalia",
+  Array.from({ length: 6 }, (_, i) => ({
+    file: `/projects/acalia/img-${String(i + 1).padStart(2, "0")}.webp`,
+    width: 2000,
+    height: 1512,
+  })),
+  (i) => `Identidade visual Acália — aplicação ${i}`
+);
+
+/* ---------- Revision 16: Personalizados ---------- */
+
+const corrielaGallery = buildGallery(
+  "corriela",
+  Array.from({ length: 8 }, (_, i) => ({
+    file: `/projects/corriela/img-${String(i + 1).padStart(2, "0")}.webp`,
+    width: 2000,
+    height: 1414,
+  })),
+  (i) => `Caixa personalizada Corriela — imagem ${i}`
+);
+
+/* ---------- Revision 16: Storymaker e Edição de Vídeos ----------
+ * Vídeos verticais (9:16) comprimidos para web em 720x1280. Abrem na
+ * mesma vitrine de Social Media, em grade de tiles 9:16. */
+
+type VideoSpec = { file: string; label: string };
+
+function buildVideoGallery(slug: string, videos: VideoSpec[], altPrefix: string): ProjectMedia[] {
+  return videos.map((video, index) => ({
+    id: `${slug}-g${index + 1}`,
+    type: "video",
+    src: `/projects/${slug}/${video.file}.mp4`,
+    poster: `/projects/${slug}/${video.file}-poster.webp`,
+    alt: `${altPrefix} — ${video.label}`,
+    width: 720,
+    height: 1280,
+    order: index + 1,
+    isPlaceholder: false,
+  }));
+}
+
+const coberturaEventosGallery = buildVideoGallery(
+  "cobertura-eventos",
+  [
+    { file: "melhores-momentos", label: "melhores momentos" },
+    { file: "trend", label: "trend" },
+    { file: "tbt", label: "TBT" },
+    { file: "depoimento-carol", label: "depoimento Carol" },
+    { file: "depoimento-fernanda", label: "depoimento Fernanda" },
+    { file: "depoimento-jessica", label: "depoimento Jessica" },
+    { file: "depoimento-leonardo", label: "depoimento Leonardo" },
+    { file: "depoimento-matheus", label: "depoimento Matheus" },
+    { file: "depoimento-paulo", label: "depoimento Paulo" },
+    { file: "discurso-jucelia", label: "discurso Jucélia" },
+  ],
+  "Reels de cobertura de evento"
+);
+
+const videosAdsGallery = buildVideoGallery(
+  "videos-ads",
+  [
+    { file: "ads-01", label: "Administração" },
+    { file: "ads-02", label: "Gestão Pública" },
+    { file: "ads-03", label: "Logística" },
+    { file: "ads-04", label: "Papel e Celulose 1" },
+    { file: "ads-05", label: "Papel e Celulose 2" },
+    { file: "ads-06", label: "Papel e Celulose 3" },
+    { file: "ads-07", label: "Recursos Humanos" },
+  ],
+  "Vídeo gravado para anúncio"
+);
+
+/* ---------- Revision 16: Websites ---------- */
+
+const thaisNalevaikoGallery = buildGallery(
+  "thais-nalevaiko",
+  Array.from({ length: 7 }, (_, i) => ({
+    file: `/projects/thais-nalevaiko/img-${String(i + 1).padStart(2, "0")}.webp`,
+    width: 2000,
+    height: 1250,
+  })),
+  (i) => `Website Thais Nalevaiko Arquitetura — tela ${i}`
 );
 
 /* ---------- Categoria: Apresentações ---------- */
@@ -338,7 +510,41 @@ const speakupGallery = buildGallery(
 );
 
 export const PROJECTS: Project[] = [
-  // --- Marcas (ordem alfabética) ---
+  // --- Marcas ---
+  // Revision 16: Coral Municipal de Telêmaco Borba e Acália entram na
+  // frente — são os trabalhos de marca mais recentes.
+  {
+    slug: "coral-telemaco-borba",
+    title: "Coral Municipal de Telêmaco Borba",
+    category: "marcas",
+    summary: "Identidade visual do Coral Municipal de Telêmaco Borba, com aplicações em uniformes, sinalização e materiais.",
+    participation: "criação autoral",
+    cover: {
+      src: "/projects/coral-telemaco-borba/vitrine.webp",
+      alt: "Identidade visual Coral Municipal de Telêmaco Borba — símbolo de notas musicais sobre fundo azul-marinho",
+      width: 1600,
+      height: 1200,
+    },
+    gallery: coralTelemacoBorbaGallery,
+    order: 1,
+    isPlaceholder: false,
+  },
+  {
+    slug: "acalia",
+    title: "Acália",
+    category: "marcas",
+    summary: "Identidade de marca da Acália, com aplicações em roupas, embalagens e papelaria.",
+    participation: "criação autoral",
+    cover: {
+      src: "/projects/acalia/vitrine.webp",
+      alt: "Identidade visual Acália — logotipo sobre degradê azul e rosa",
+      width: 1419,
+      height: 1064,
+    },
+    gallery: acaliaGallery,
+    order: 2,
+    isPlaceholder: false,
+  },
   {
     slug: "fetcherz",
     title: "Fetcherz",
@@ -357,7 +563,7 @@ export const PROJECTS: Project[] = [
       height: 1055,
     },
     gallery: fetcherzGallery,
-    order: 1,
+    order: 3,
     isPlaceholder: false,
   },
   {
@@ -374,7 +580,7 @@ export const PROJECTS: Project[] = [
       height: 1697,
     },
     gallery: germantownGallery,
-    order: 2,
+    order: 4,
     isPlaceholder: false,
   },
   {
@@ -391,7 +597,7 @@ export const PROJECTS: Project[] = [
       height: 1073,
     },
     gallery: lahennGallery,
-    order: 3,
+    order: 5,
     isPlaceholder: false,
   },
   {
@@ -408,7 +614,7 @@ export const PROJECTS: Project[] = [
       height: 1073,
     },
     gallery: nathanOliveiraGallery,
-    order: 4,
+    order: 6,
     isPlaceholder: false,
   },
   {
@@ -419,7 +625,7 @@ export const PROJECTS: Project[] = [
     participation: "criação autoral",
     cover: coverFromGallery(nayaraRochaMarcaGallery),
     gallery: nayaraRochaMarcaGallery,
-    order: 5,
+    order: 7,
     isPlaceholder: false,
   },
   {
@@ -438,43 +644,60 @@ export const PROJECTS: Project[] = [
       height: 1402,
     },
     gallery: vitoriaNalevaikoGallery,
-    order: 6,
+    order: 8,
     isPlaceholder: false,
   },
 
-  // --- Social Media (ordem alfabética) ---
+  // --- Social Media ---
+  // Revision 16: ordem de destaque pedida pela cliente — IAM & Co.,
+  // IANKE e Instituto Escale primeiro.
   {
-    slug: "gilberto-tesser",
-    title: "Gilberto Tesser",
+    slug: "iam-co",
+    title: "IAM & Co.",
     category: "social",
-    summary: "Social media para Gilberto Tesser.",
-    participation: "criação autoral",
-    // Revision 10: capa oficial "CAPA VITRINE" enviada pela cliente —
-    // uma única arte de vitrine, em vez da grade composta anterior.
-    cover: {
-      src: "/projects/gilberto-tesser/vitrine.webp",
-      alt: "Social media Gilberto Tesser — retrato médico com tipografia editorial",
-      width: 508,
-      height: 508,
-    },
-    gallery: gilbertoTesserGallery,
-    order: 7,
-    isPlaceholder: false,
-  },
-  {
-    slug: "growth-solutions",
-    title: "Growth Solutions",
-    category: "social",
-    summary: "Social media para Growth Solutions, incluindo peças em vídeo.",
+    summary: "Social media de cultura, consumo e luxo para a IAM & Co., com carrosséis de imprensa e post animado.",
     participation: "criação autoral",
     cover: {
-      src: "/projects/growth-solutions/vitrine.webp",
-      alt: "Social media Growth Solutions — arte de vitrine",
+      src: "/projects/iam-co/post-animado-poster.webp",
+      alt: "Social media IAM & Co. — post animado",
       width: 1080,
       height: 1350,
     },
-    gallery: growthSolutionsGallery,
-    order: 8,
+    coverVideo: "/projects/iam-co/post-animado.mp4",
+    gallery: iamCoGallery,
+    order: 9,
+    isPlaceholder: false,
+  },
+  {
+    slug: "ianke",
+    title: "IANKE Agência de Viagens",
+    category: "social",
+    summary: "Social media para a IANKE Agência de Viagens, com reels, carrosséis e campanha de Black November.",
+    participation: "criação autoral",
+    cover: {
+      src: "/projects/ianke/memorias.webp",
+      alt: "Social media IANKE — Você cuida das memórias, nós cuidamos dos detalhes",
+      width: 1080,
+      height: 1350,
+    },
+    gallery: iankeGallery,
+    order: 10,
+    isPlaceholder: false,
+  },
+  {
+    slug: "instituto-escale",
+    title: "Instituto Escale",
+    category: "social",
+    summary: "Social media para o Instituto Escale, com reels, carrossel e post estático.",
+    participation: "criação autoral",
+    cover: {
+      src: "/projects/instituto-escale/carrossel-01.webp",
+      alt: "Social media Instituto Escale — capa do carrossel Sua equipe resolve a falha",
+      width: 1080,
+      height: 1350,
+    },
+    gallery: institutoEscaleGallery,
+    order: 11,
     isPlaceholder: false,
   },
   {
@@ -490,7 +713,7 @@ export const PROJECTS: Project[] = [
       height: 1350,
     },
     gallery: lacosUnidosGallery,
-    order: 10,
+    order: 12,
     isPlaceholder: false,
   },
   {
@@ -506,18 +729,41 @@ export const PROJECTS: Project[] = [
       height: 1350,
     },
     gallery: mjGallery,
-    order: 11,
+    order: 13,
+    isPlaceholder: false,
+  },
+
+  // --- Storymaker e Edição de Vídeos (Revision 16) ---
+  {
+    slug: "cobertura-eventos",
+    title: "Storymaker — Cobertura de Eventos",
+    category: "videos",
+    summary: "Reels de cobertura de evento: melhores momentos, trends e depoimentos gravados e editados no dia.",
+    participation: "criação autoral",
+    cover: {
+      src: "/projects/cobertura-eventos/vitrine.webp",
+      alt: "Reels de cobertura de evento — melhores momentos",
+      width: 720,
+      height: 900,
+    },
+    gallery: coberturaEventosGallery,
+    order: 14,
     isPlaceholder: false,
   },
   {
-    slug: "nayara-rocha-social",
-    title: "Nayara Rocha",
-    category: "social",
-    summary: "Grade de social media para a barbearia Nayara Rocha.",
+    slug: "videos-ads",
+    title: "Vídeos para Anúncios",
+    category: "videos",
+    summary: "Vídeos gravados e editados para campanhas de anúncios (ADS).",
     participation: "criação autoral",
-    cover: coverFromGallery(nayaraRochaSocialGallery),
-    gallery: nayaraRochaSocialGallery,
-    order: 12,
+    cover: {
+      src: "/projects/videos-ads/vitrine.webp",
+      alt: "Vídeo gravado para anúncio",
+      width: 720,
+      height: 900,
+    },
+    gallery: videosAdsGallery,
+    order: 15,
     isPlaceholder: false,
   },
 
@@ -532,7 +778,7 @@ export const PROJECTS: Project[] = [
     participation: "criação autoral em parceria com o Estúdio LOOPALHAMA",
     cover: coverFromGallery(amandaFerrazGallery),
     gallery: amandaFerrazGallery,
-    order: 13,
+    order: 16,
     isPlaceholder: false,
   },
   {
@@ -543,7 +789,7 @@ export const PROJECTS: Project[] = [
     participation: "criação autoral",
     cover: coverFromGallery(coritibaFootballGallery),
     gallery: coritibaFootballGallery,
-    order: 15,
+    order: 17,
     isPlaceholder: false,
   },
   {
@@ -557,7 +803,44 @@ export const PROJECTS: Project[] = [
     participation: "criação autoral",
     cover: coverFromGallery(speakupGallery),
     gallery: speakupGallery,
-    order: 16,
+    order: 18,
+    isPlaceholder: false,
+  },
+
+  // --- Websites (Revision 16) ---
+  {
+    slug: "thais-nalevaiko",
+    title: "Thais Nalevaiko Arquitetura",
+    category: "websites",
+    summary: "Website para o escritório de arquitetura e interiores Thais Nalevaiko, com galeria 3D de projetos e antes e depois interativo.",
+    participation: "criação autoral",
+    cover: {
+      src: "/projects/thais-nalevaiko/vitrine.webp",
+      alt: "Website Thais Nalevaiko Arquitetura — tela inicial",
+      width: 1600,
+      height: 1200,
+    },
+    liveUrl: "/sites/thais-nalevaiko/index.html",
+    gallery: thaisNalevaikoGallery,
+    order: 19,
+    isPlaceholder: false,
+  },
+
+  // --- Personalizados (Revision 16) ---
+  {
+    slug: "corriela",
+    title: "Corriela",
+    category: "personalizados",
+    summary: "Caixa personalizada para a Corriela: embalagem, papel de seda estampado e mensagens internas.",
+    participation: "criação autoral",
+    cover: {
+      src: "/projects/corriela/vitrine.webp",
+      alt: "Caixa personalizada Corriela aberta, com papel floral e selo da marca",
+      width: 1335,
+      height: 1001,
+    },
+    gallery: corrielaGallery,
+    order: 20,
     isPlaceholder: false,
   },
 ];

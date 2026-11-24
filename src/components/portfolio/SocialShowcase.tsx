@@ -164,7 +164,9 @@ export default function SocialShowcase({
           </button>
         </div>
 
-        <div className={styles.grid}>
+        <div
+          className={`${styles.grid} ${project.category === "videos" ? styles.gridVideos : ""}`}
+        >
           {tiles.map((tile, tileIndex) =>
             tile.kind === "single" ? (
               <SingleTile
@@ -249,6 +251,25 @@ export default function SocialShowcase({
 
 function SingleTile({ item, onOpen }: { item: ProjectMedia; onOpen: () => void }) {
   const [isPlaying, setIsPlaying] = useState(false);
+
+  // Revision 16: post animado (sem som) roda sozinho em loop, como no feed.
+  if (item.type === "video" && item.autoplayLoop) {
+    return (
+      <div className={styles.tile}>
+        <video
+          className={styles.tileVideo}
+          src={item.src}
+          poster={item.poster}
+          aria-label={item.alt}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+        />
+      </div>
+    );
+  }
 
   if (item.type === "video") {
     return (

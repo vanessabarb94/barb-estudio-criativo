@@ -186,14 +186,20 @@ export const PORTFOLIO_PREVIEW_BLOCKS: PortfolioPreviewBlock[] = [
     category: "marcas",
     // Revision 10: ordem pedida pela cliente — Vitória no meio para
     // separar as capas mais escuras (Fetcherz e Nayara Rocha).
-    projectSlugs: ["fetcherz", "vitoria-nalevaiko", "nayara-rocha-marca"],
+    // Revision 16: Coral e Acália (novas) entram na prévia; a capa
+    // clara da Acália fica no meio, separando as duas mais escuras.
+    projectSlugs: ["coral-telemaco-borba", "acalia", "fetcherz"],
   },
   {
     title: "Social Media",
     category: "social",
-    // Revision 10: ordem pedida pela cliente. IAM&Co. saiu (ainda não
-    // aprovada) — Gilberto Tesser entra no lugar.
-    projectSlugs: ["gilberto-tesser", "growth-solutions", "lacos-unidos"],
+    // Revision 16: destaques pedidos pela cliente, nesta ordem.
+    projectSlugs: ["iam-co", "ianke", "instituto-escale"],
+  },
+  {
+    title: "Storymaker e Edição de Vídeos",
+    category: "videos",
+    projectSlugs: ["cobertura-eventos", "videos-ads"],
   },
   {
     title: "Apresentações",
@@ -212,7 +218,10 @@ export const PORTFOLIO_PREVIEW_BLOCKS: PortfolioPreviewBlock[] = [
 export const PORTFOLIO_CATEGORY_LABELS: Record<string, string> = {
   marcas: "Marcas",
   social: "Social Media",
+  videos: "Storymaker e Edição de Vídeos",
   apresentacoes: "Apresentações",
+  websites: "Websites",
+  personalizados: "Personalizados",
 };
 
 export type Testimonial = {

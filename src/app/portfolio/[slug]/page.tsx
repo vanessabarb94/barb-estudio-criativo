@@ -6,7 +6,7 @@ import {
   getNextProject,
   getProjectBySlug,
 } from "@/content/projects";
-import { MICROCOPY } from "@/content/site";
+import { MICROCOPY, PORTFOLIO_CATEGORY_LABELS } from "@/content/site";
 import { isPreviewMode } from "@/lib/preview";
 import { getWhatsAppLink, WHATSAPP_DEFAULT_MESSAGE } from "@/lib/whatsapp";
 import ProvisionalBadge from "@/components/ui/ProvisionalBadge";
@@ -62,7 +62,11 @@ export default async function ProjectPage({
       </Link>
 
       <header className={styles.header}>
-        {project.category && <span className={styles.category}>{project.category}</span>}
+        {project.category && (
+          <span className={styles.category}>
+            {PORTFOLIO_CATEGORY_LABELS[project.category] ?? project.category}
+          </span>
+        )}
         <div className={styles.titleRow}>
           <h1 className={styles.title}>{project.title}</h1>
           {preview && project.isPlaceholder && <ProvisionalBadge />}
@@ -74,6 +78,18 @@ export default async function ProjectPage({
         <span className={styles.participationLabel}>{MICROCOPY.myParticipation}:</span>{" "}
         {project.participation}
       </p>
+
+      {project.liveUrl && (
+        // Revision 16: websites abrem a versão navegável numa nova aba.
+        <a
+          href={project.liveUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+          className={styles.liveLink}
+        >
+          Ver site funcionando ↗
+        </a>
+      )}
 
       <span className={styles.galleryHeading}>Galeria</span>
       <ProjectGallery items={project.gallery} />

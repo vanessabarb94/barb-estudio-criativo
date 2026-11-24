@@ -62,7 +62,8 @@ export default function CategoryBlock({
   compact?: boolean;
   hideCta?: boolean;
 }) {
-  const isSocial = category === "social";
+  // Revision 16: a aba de vídeos usa a mesma vitrine de Social Media.
+  const isSocial = category === "social" || category === "videos";
   const router = useRouter();
   const [openProjectIndex, setOpenProjectIndex] = useState<number | null>(null);
   const triggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -102,7 +103,21 @@ export default function CategoryBlock({
               onClick={() => openAt(index)}
             >
               <div className={`${styles.cardMedia} ${styles.cardMediaSocial}`}>
-                {project.cover ? (
+                {project.coverVideo && project.cover ? (
+                  // Revision 16: capa animada (muda, em loop) — ex. IAM & Co.
+                  <video
+                    src={project.coverVideo}
+                    poster={project.cover.src}
+                    width={project.cover.width}
+                    height={project.cover.height}
+                    aria-label={project.cover.alt}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                  />
+                ) : project.cover ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={project.cover.src}

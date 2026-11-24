@@ -118,3 +118,22 @@
   background: var(--color-graphite);
   color: var(--color-offwhite);
 }
+
+/* Revision 16: link para a versão navegável de um website. */
+.liveLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-6);
+  border-radius: 999px;
+  background: var(--color-graphite);
+  color: var(--color-offwhite);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--text-menu);
+}
+
+.liveLink:hover {
+  background: var(--color-black);
+}
