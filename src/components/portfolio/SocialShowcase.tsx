@@ -6,6 +6,11 @@ import type { Project, ProjectMedia } from "@/content/projects";
 import { MICROCOPY } from "@/content/site";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 import LightboxFrame from "@/components/ui/LightboxFrame";
+import LazyLoopVideo from "@/components/ui/LazyLoopVideo";
+import { LAZY_IMG, srcSetFor } from "@/lib/responsiveImage";
+
+/** Revision 17: largura de cada tile da grade (2 colunas no mobile, 3 a partir de 768px). */
+const TILE_SIZES = "(min-width: 768px) 31vw, 48vw";
 import styles from "./SocialShowcase.module.css";
 
 /**
@@ -253,19 +258,15 @@ function SingleTile({ item, onOpen }: { item: ProjectMedia; onOpen: () => void }
   const [isPlaying, setIsPlaying] = useState(false);
 
   // Revision 16: post animado (sem som) roda sozinho em loop, como no feed.
-  if (item.type === "video" && item.autoplayLoop) {
+  // Revision 17: só baixa quando o tile aparece na tela.
+  if (item.type === "video" && item.autoplayLoop && item.src && item.poster) {
     return (
       <div className={styles.tile}>
-        <video
+        <LazyLoopVideo
           className={styles.tileVideo}
           src={item.src}
           poster={item.poster}
-          aria-label={item.alt}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
+          label={item.alt}
         />
       </div>
     );
@@ -292,7 +293,15 @@ function SingleTile({ item, onOpen }: { item: ProjectMedia; onOpen: () => void }
             aria-label={`${MICROCOPY.videoPlay} — ${item.alt}`}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={item.poster} alt={item.alt} width={item.width} height={item.height} />
+            <img
+              src={item.poster}
+              srcSet={srcSetFor(item.poster, item.width)}
+              sizes={TILE_SIZES}
+              alt={item.alt}
+              width={item.width}
+              height={item.height}
+              {...LAZY_IMG}
+            />
             <span className={styles.playIcon} aria-hidden="true">
               ▶
             </span>
@@ -305,7 +314,15 @@ function SingleTile({ item, onOpen }: { item: ProjectMedia; onOpen: () => void }
   return (
     <button type="button" className={styles.tile} onClick={onOpen}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={item.src} alt={item.alt} width={item.width} height={item.height} />
+      <img
+        src={item.src}
+        srcSet={srcSetFor(item.src, item.width)}
+        sizes={TILE_SIZES}
+        alt={item.alt}
+        width={item.width}
+        height={item.height}
+        {...LAZY_IMG}
+      />
     </button>
   );
 }
@@ -333,7 +350,15 @@ function CarouselTile({
         onClick={() => onOpen(frame)}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={current.src} alt={current.alt} width={current.width} height={current.height} />
+        <img
+          src={current.src}
+          srcSet={srcSetFor(current.src, current.width)}
+          sizes={TILE_SIZES}
+          alt={current.alt}
+          width={current.width}
+          height={current.height}
+          {...LAZY_IMG}
+        />
       </button>
       {items.length > 1 && (
         <div className={styles.carouselControls}>

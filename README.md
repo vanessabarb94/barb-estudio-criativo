@@ -48,6 +48,19 @@ ou depoimento — tudo vem de `src/content/site.ts` e
 Depoimentos marcados com `isPlaceholder: true` / `publishable: false`
 nunca aparecem em produção.
 
+### Miniaturas (desempenho)
+
+Cada `.webp` em `public/projects/` tem duas versões menores ao lado —
+`nome.480w.webp` e `nome.800w.webp` — usadas por cards, faixa e grades
+via `srcSet` (`src/lib/responsiveImage.ts`). O arquivo original só é
+baixado na visão ampliada. Ao adicionar uma imagem nova, gere as duas
+variantes (largura 480 e 800, sem ampliar além do original, WebP
+qualidade ~78); sem elas a imagem aparece quebrada nos cards.
+
+Vídeos ficam em MP4 H.264 720p com `+faststart`; vídeos em loop sem som
+(ex. post animado) vão sem faixa de áudio e só carregam quando entram
+na tela (`LazyLoopVideo`).
+
 ## Detalhamento completo
 
 Ver `website-package.md` (histórico de revisões) para árvore de arquivos,

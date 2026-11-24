@@ -8,6 +8,8 @@ import { MICROCOPY } from "@/content/site";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import ProvisionalBadge from "@/components/ui/ProvisionalBadge";
 import PlaceholderMedia from "@/components/ui/PlaceholderMedia";
+import LazyLoopVideo from "@/components/ui/LazyLoopVideo";
+import { LAZY_IMG, srcSetFor } from "@/lib/responsiveImage";
 import SocialShowcase from "./SocialShowcase";
 import styles from "./CategoryBlock.module.css";
 
@@ -74,6 +76,12 @@ export default function CategoryBlock({
     setOpenProjectIndex(index);
   }
 
+  // Revision 17: largura real do card na tela (1 coluna no mobile; 2 em
+  // /portfolio ou 3 na prévia da home a partir de 768px).
+  const cardSizes = compact
+    ? "(min-width: 768px) 30vw, 92vw"
+    : "(min-width: 768px) 46vw, 92vw";
+
   const openProject = openProjectIndex !== null ? projects[openProjectIndex] : null;
   const ctaHref = getWhatsAppLink(
     `Olá! Vim pelo site da BARB e quero conversar sobre um projeto de ${title}.`
@@ -105,25 +113,24 @@ export default function CategoryBlock({
               <div className={`${styles.cardMedia} ${styles.cardMediaSocial}`}>
                 {project.coverVideo && project.cover ? (
                   // Revision 16: capa animada (muda, em loop) — ex. IAM & Co.
-                  <video
+                  // Revision 17: só baixa/toca quando o card aparece na tela.
+                  <LazyLoopVideo
                     src={project.coverVideo}
                     poster={project.cover.src}
                     width={project.cover.width}
                     height={project.cover.height}
-                    aria-label={project.cover.alt}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
+                    label={project.cover.alt}
                   />
                 ) : project.cover ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={project.cover.src}
+                    srcSet={srcSetFor(project.cover.src, project.cover.width)}
+                    sizes={cardSizes}
                     alt={project.cover.alt}
                     width={project.cover.width}
                     height={project.cover.height}
+                    {...LAZY_IMG}
                   />
                 ) : (
                   <PlaceholderMedia text={project.title} />
@@ -141,9 +148,12 @@ export default function CategoryBlock({
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={project.cover.src}
+                    srcSet={srcSetFor(project.cover.src, project.cover.width)}
+                    sizes={cardSizes}
                     alt={project.cover.alt}
                     width={project.cover.width}
                     height={project.cover.height}
+                    {...LAZY_IMG}
                   />
                 ) : (
                   <PlaceholderMedia text={project.title} />

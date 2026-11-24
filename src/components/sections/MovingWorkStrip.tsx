@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getProjectsOrdered } from "@/content/projects";
 import Marquee from "@/components/ui/Marquee";
 import PlaceholderMedia from "@/components/ui/PlaceholderMedia";
+import { LAZY_IMG, srcSetFor } from "@/lib/responsiveImage";
 import styles from "./MovingWorkStrip.module.css";
 
 /**
@@ -46,6 +47,10 @@ export default function MovingWorkStrip() {
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={item.cover.src}
+                // Revision 17: tiles têm no máximo 320px de largura.
+                srcSet={srcSetFor(item.cover.src, item.cover.width)}
+                sizes="320px"
+                {...LAZY_IMG}
                 alt={item.cover.alt}
                 width={item.cover.width}
                 height={item.cover.height}

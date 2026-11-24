@@ -7,6 +7,7 @@ import { MICROCOPY } from "@/content/site";
 import { useFocusTrap } from "@/lib/useFocusTrap";
 import PlaceholderMedia from "@/components/ui/PlaceholderMedia";
 import LightboxFrame from "@/components/ui/LightboxFrame";
+import { LAZY_IMG, srcSetFor } from "@/lib/responsiveImage";
 import styles from "./ProjectGallery.module.css";
 
 /**
@@ -81,7 +82,17 @@ export default function ProjectGallery({ items }: { items: ProjectMedia[] }) {
           >
             {media.src ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={media.src} alt={media.alt} width={media.width} height={media.height} />
+              <img
+                src={media.src}
+                // Revision 17: miniatura no tamanho do quadro; o original
+                // em tamanho cheio só é baixado na visão ampliada.
+                srcSet={srcSetFor(media.src, media.width)}
+                sizes="(min-width: 768px) 31vw, 46vw"
+                alt={media.alt}
+                width={media.width}
+                height={media.height}
+                {...LAZY_IMG}
+              />
             ) : (
               <PlaceholderMedia text={media.alt} />
             )}

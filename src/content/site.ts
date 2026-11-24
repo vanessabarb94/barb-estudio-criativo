@@ -188,7 +188,7 @@ export const PORTFOLIO_PREVIEW_BLOCKS: PortfolioPreviewBlock[] = [
     // separar as capas mais escuras (Fetcherz e Nayara Rocha).
     // Revision 16: Coral e Acália (novas) entram na prévia; a capa
     // clara da Acália fica no meio, separando as duas mais escuras.
-    projectSlugs: ["coral-telemaco-borba", "acalia", "fetcherz"],
+    projectSlugs: ["coral-telemaco-borba", "acalia", "nayara-rocha-marca"],
   },
   {
     title: "Social Media",
