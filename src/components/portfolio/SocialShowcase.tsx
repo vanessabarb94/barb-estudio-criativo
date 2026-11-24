@@ -113,6 +113,24 @@ export default function SocialShowcase({
   const openTileRef = useRef<number | null>(null);
   const dialogRef = useRef<HTMLDivElement | null>(null);
 
+  // Revision 19: só um vídeo com som toca por vez — dar play num vídeo
+  // pausa o que estava tocando. O evento `play` não borbulha, por isso
+  // a escuta é na fase de captura. Posts animados mudos em loop
+  // (LazyLoopVideo) ficam de fora: são decorativos e não competem.
+  useEffect(() => {
+    const panel = dialogRef.current;
+    if (!panel) return;
+    function handlePlay(event: Event) {
+      const started = event.target;
+      if (!(started instanceof HTMLVideoElement) || started.loop) return;
+      panel?.querySelectorAll("video").forEach((video) => {
+        if (video !== started && !video.loop && !video.paused) video.pause();
+      });
+    }
+    panel.addEventListener("play", handlePlay, true);
+    return () => panel.removeEventListener("play", handlePlay, true);
+  }, []);
+
   function openTileAt(tileIndex: number | null, initialFrame = 0) {
     openTileRef.current = tileIndex;
     setOpenTileState(tileIndex);

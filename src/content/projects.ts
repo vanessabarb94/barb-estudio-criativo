@@ -479,6 +479,12 @@ const reelsGallery: ProjectMedia[] = [
     poster: "/projects/instituto-escale/reels-2-poster-916.webp",
     alt: "Reels Você resolve a causa ou o sintoma? — Instituto Escale",
   },
+  {
+    // Revision 19: completa a fileira de 3.
+    src: "/projects/reels/luiz-superdotacao-tdah.mp4",
+    poster: "/projects/reels/luiz-superdotacao-tdah-poster.webp",
+    alt: "Reels Superdotação e TDAH — Psicólogo Luiz",
+  },
 ].map((video, index) => ({
   id: `reels-g${index + 1}`,
   type: "video" as const,
@@ -794,7 +800,7 @@ export const PROJECTS: Project[] = [
     slug: "reels",
     title: "Reels",
     category: "videos",
-    summary: "Reels gravados e editados para social media: IANKE Agência de Viagens e Instituto Escale.",
+    summary: "Reels gravados e editados para social media: IANKE Agência de Viagens, Instituto Escale e Psicólogo Luiz.",
     participation: "criação autoral",
     cover: {
       src: "/projects/ianke/reels-kit-viagem-poster.webp",
